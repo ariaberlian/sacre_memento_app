@@ -3,6 +3,8 @@ import 'dart:async';
 
 import 'package:sacre_memento_app/view/main_page.dart';
 
+import '../viewmodel/login_api.dart';
+
 class WelcomingPage extends StatefulWidget {
   const WelcomingPage({Key? key}) : super(key: key);
 
@@ -19,9 +21,17 @@ class _WelcomingPageState extends State<WelcomingPage> {
 
   splashScreenStart() async {
     var duration = const Duration(seconds: 1);
-    return Timer(duration, (() {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: ((context) => const MainPage())));
+    return Timer(duration, (() async {
+      var isAuthenticated = await LoginApi.authenticate();
+
+      while (!isAuthenticated) {
+        isAuthenticated = await LoginApi.authenticate();
+      }
+      if (isAuthenticated) {
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: ((context) => const MainPage())));
+      }
     }));
   }
 
