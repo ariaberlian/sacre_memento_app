@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sacre_memento_app/view/welcoming_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,14 +9,14 @@ class MyApp extends StatefulWidget {
   const MyApp({ Key? key }) : super(key: key);
 
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return const MaterialApp(
+      home: WelcomingPage(),
     );
   }
 }
