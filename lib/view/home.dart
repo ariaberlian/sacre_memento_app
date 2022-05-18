@@ -43,8 +43,7 @@ class _HomeState extends State<Home> {
                 // TODO BUAT FOLDER BARU
                 log('cf');
               } else if (selected == 's') {
-                //TODO Sort
-                log('s');
+                _showActionSheet(context);
               }
             },
           ),
@@ -55,6 +54,44 @@ class _HomeState extends State<Home> {
           //TODO bikin list view card brodieee
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // TODO: FILE PICKER
+        },
+        child: const Icon(Icons.add),
+      ),
     );
+  }
+
+  //TODO: Sort
+  void _showActionSheet(BuildContext context) {
+    showCupertinoModalPopup<void>(
+        context: context,
+        builder: (BuildContext context) => CupertinoActionSheet(
+              title: const Text('Sort By'),
+              actions: [
+                CupertinoActionSheetAction(
+                    onPressed: () {
+                      // TODO: SORT BY NAME(A-Z)
+                    },
+                    child: const Text('Name (A-Z)')),
+                CupertinoActionSheetAction(
+                    onPressed: () {
+                      // TODO: SORT BY SIZE (big - small)
+                    },
+                    child: const Text('Size (big - small)')),
+                CupertinoActionSheetAction(
+                    onPressed: () {
+                      // TODO: SORT BY Time(new - old)
+                    },
+                    child: const Text('Time (new - old)')),
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ));
   }
 }
