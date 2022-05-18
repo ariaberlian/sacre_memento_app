@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sacre_memento_app/main.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -11,6 +12,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  var count = 9; //TODO: Change with number of treasure
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +23,7 @@ class _HomeState extends State<Home> {
           style: TextStyle(
               fontWeight: FontWeight.bold, color: CupertinoColors.white),
         ),
-        backgroundColor: CupertinoColors.systemBlue,
+        backgroundColor: MyApp.biru,
         trailing: DropdownButtonHideUnderline(
           child: DropdownButton(
             icon: const Icon(Icons.more_vert),
@@ -49,17 +51,46 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      body: ListView(
-        children: const [
-          //TODO bikin list view card brodieee
-        ],
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: const BoxDecoration(
+            image: DecorationImage(image: AssetImage('assets/bg.png'), fit: BoxFit.cover)),
+        child: ListView.separated(
+          padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+          separatorBuilder: (context, index) {
+            return Container(
+              height: 8,
+            );
+          },
+          itemCount: count,
+          itemBuilder: (context, index) {
+            return Card(
+              child: Column(
+                children: const [
+                  ListTile(
+                    leading: Image(
+                        image: AssetImage(
+                            'assets/welcome_potrait.png')), // TODO: fill with treasure thumbnail
+                    title: Text('SSNI-432'), // TODO: fill with treasure title
+                    subtitle: Text(
+                        '3,42 GB Internal'), //TODO: fill with treasure data
+                    // ontap: (){TODO: File open}
+                    // onLongPress: (){TODO: select and more menu}
+                  )
+                ],
+              ),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: FILE PICKER
-        },
-        child: const Icon(Icons.add),
-      ),
+          onPressed: () {
+            // TODO: FILE PICKER
+          },
+          backgroundColor: MyApp.kuning3,
+          child: const Icon(
+            Icons.add,
+          )),
     );
   }
 

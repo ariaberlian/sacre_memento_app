@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sacre_memento_app/main.dart';
 import 'package:sacre_memento_app/view/home.dart';
 
 class MainPage extends StatefulWidget {
@@ -16,7 +17,7 @@ class _MainPageState extends State<MainPage> {
       tabBar: CupertinoTabBar(
         activeColor: CupertinoColors.white,
         inactiveColor: CupertinoColors.opaqueSeparator,
-        backgroundColor: CupertinoColors.systemBlue,
+        backgroundColor: MyApp.biru,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home_max_outlined)),
           BottomNavigationBarItem(
