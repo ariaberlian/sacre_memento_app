@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:sacre_memento_app/blocs/select_mode.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MoreSelectMenu extends StatelessWidget {
   const MoreSelectMenu({
@@ -22,12 +23,11 @@ class MoreSelectMenu extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.4,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const[
-                Icon(Icons.create_new_folder),
-                Text('New Folder'),
-              ]
-            ),
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Icon(Icons.create_new_folder),
+                  Text('New Folder'),
+                ]),
           ),
         ),
         DropdownMenuItem(
@@ -35,12 +35,11 @@ class MoreSelectMenu extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.4,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const[
-                Icon(Icons.edit),
-                Text('Rename'),
-              ]
-            ),
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Icon(Icons.edit),
+                  Text('Rename'),
+                ]),
           ),
         ),
         DropdownMenuItem(
@@ -48,12 +47,11 @@ class MoreSelectMenu extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.4,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const[
-                Icon(Icons.copy),
-                Text('Copy'),
-              ]
-            ),
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Icon(Icons.copy),
+                  Text('Copy'),
+                ]),
           ),
         ),
         DropdownMenuItem(
@@ -61,12 +59,11 @@ class MoreSelectMenu extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.4,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const[
-                Icon(Icons.cut),
-                Text('Move'),
-              ]
-            ),
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Icon(Icons.cut),
+                  Text('Move'),
+                ]),
           ),
         ),
         DropdownMenuItem(
@@ -74,12 +71,11 @@ class MoreSelectMenu extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.4,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const[
-                Icon(Icons.restore),
-                Text('Restore'),
-              ]
-            ),
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Icon(Icons.restore),
+                  Text('Restore'),
+                ]),
           ),
         ),
         DropdownMenuItem(
@@ -87,12 +83,11 @@ class MoreSelectMenu extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.4,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const[
-                Icon(Icons.delete_forever),
-                Text('Delete'),
-              ]
-            ),
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Icon(Icons.delete_forever),
+                  Text('Delete'),
+                ]),
           ),
         ),
         DropdownMenuItem(
@@ -100,15 +95,13 @@ class MoreSelectMenu extends StatelessWidget {
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.4,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const[
-                Icon(Icons.check_box_outline_blank),
-                Text('UnSelect'),
-              ]
-            ),
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const [
+                  Icon(Icons.check_box_outline_blank),
+                  Text('UnSelect'),
+                ]),
           ),
         ),
-       
       ],
       onChanged: (String? selected) {
         if (selected == 'cf') {
@@ -132,6 +125,7 @@ class MoreSelectMenu extends StatelessWidget {
         } else if (selected == 'us') {
           //TODO: buat unselect
           log('us');
+          context.read<SelectModeCubit>().selectMode(false);
         }
       },
     );
