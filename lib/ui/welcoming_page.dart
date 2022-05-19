@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:sacre_memento_app/view/main_page.dart';
+import 'package:sacre_memento_app/ui/main_page.dart';
 
-import '../viewmodel/login_api.dart';
+import '../api/login_api.dart';
 
 class WelcomingPage extends StatefulWidget {
   const WelcomingPage({Key? key}) : super(key: key);

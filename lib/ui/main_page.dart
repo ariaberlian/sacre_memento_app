@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sacre_memento_app/main.dart';
-import 'package:sacre_memento_app/view/home.dart';
+import 'package:sacre_memento_app/const.dart';
+import 'package:sacre_memento_app/ui/home.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -15,9 +15,10 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
+        height: 60,
         activeColor: CupertinoColors.white,
         inactiveColor: CupertinoColors.opaqueSeparator,
-        backgroundColor: MyApp.biru,
+        backgroundColor: Constant.biru,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home_max_outlined)),
           BottomNavigationBarItem(
