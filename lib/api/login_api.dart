@@ -7,6 +7,7 @@ class LoginApi {
   static Future<bool> hasBiometrics() async {
     try {
       return await _auth.canCheckBiometrics;
+    // ignore: unused_catch_clause
     } on PlatformException catch (e) {
       return false;
     }
@@ -15,6 +16,7 @@ class LoginApi {
   static Future<List<BiometricType>> getBiometrics() async {
     try {
       return await _auth.getAvailableBiometrics();
+    // ignore: unused_catch_clause
     } on PlatformException catch (e) {
       return <BiometricType>[];
     }
@@ -29,6 +31,7 @@ class LoginApi {
           localizedReason: 'Prove you\'re worthy!',
           options: const AuthenticationOptions(useErrorDialogs: false, stickyAuth: true),
           );
+    // ignore: unused_catch_clause
     } on PlatformException catch (e) {
       return false;
     }

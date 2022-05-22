@@ -8,6 +8,7 @@ class Treasure {
   final String softpath;
   final String whichmem;
   final int size;
+  // ignore: non_constant_identifier_names
   final String? time_added;
 
   const Treasure({
@@ -20,6 +21,7 @@ class Treasure {
     required this.softpath,
     required this.whichmem,
     required this.size,
+    // ignore: non_constant_identifier_names
     this.time_added
   });
 

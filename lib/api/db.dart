@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 import 'package:sacre_memento_app/model/treasure.dart';
 import 'package:sqflite/sqflite.dart';
