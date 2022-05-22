@@ -16,7 +16,6 @@ class MoreSelectMenu extends StatelessWidget {
       icon: const Icon(Icons.more_vert),
       iconEnabledColor: CupertinoColors.white,
 
-      // TODO MORE MENU
       items: [
         DropdownMenuItem(
           value: 'cf',
@@ -123,8 +122,6 @@ class MoreSelectMenu extends StatelessWidget {
           //TODO: buat delete
           log('dl');
         } else if (selected == 'us') {
-          //TODO: buat unselect
-          log('us');
           context.read<SelectModeCubit>().selectMode(false);
         }
       },

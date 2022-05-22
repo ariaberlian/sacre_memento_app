@@ -15,7 +15,6 @@ class MoreMenu extends StatelessWidget {
       icon: const Icon(Icons.more_vert),
       iconEnabledColor: CupertinoColors.white,
 
-      // TODO MORE MENU
       items: [
         DropdownMenuItem(
           value: 'cf',
