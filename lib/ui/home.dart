@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sacre_memento_app/api/db.dart';
+import 'package:sacre_memento_app/api/encryption.dart';
 import 'package:sacre_memento_app/blocs/select_mode.dart';
 import 'package:sacre_memento_app/const.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -124,6 +126,10 @@ class _HomeState extends State<Home> {
         floatingActionButton: FloatingActionButton(
             onPressed: () async {
               // TODO: FILE PICKER
+
+              String? dir = await Encryption.pickDir();
+              log(dir!);
+
               // await DatabaseManager.instance.add(
               //   const Treasure(id: 11, name: 'ahh', thumbnail: 'assets/welcome_potrait.png', type: 'Photo', extention: 'jpg', path: 'there/here', softpath: 'there/rightThere', whichmem: 'internal', size: 3000)
               // );

@@ -38,6 +38,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   sqflite: ^2.0.2+1
   path_provider: ^2.0.10
+  file_picker: ^4.5.1
 
 dev_dependencies:
   flutter_test:
