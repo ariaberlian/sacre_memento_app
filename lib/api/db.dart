@@ -65,4 +65,10 @@ class DatabaseManager {
     log('otw tambah data');
     return await db.insert('treasure', treasure.toMap());
   }
+
+  Future<int> delete(int id) async {
+    Database db = await instance.db;
+    return db.delete('treasure', where: 'id=?', whereArgs: [id]);
+  }
+
 }
