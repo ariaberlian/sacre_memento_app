@@ -1,5 +1,5 @@
 class Treasure {
-  final int id;
+  final int? id;
   final String name;
   final String thumbnail;
   final String type;
@@ -9,10 +9,10 @@ class Treasure {
   final String whichmem;
   final int size;
   // ignore: non_constant_identifier_names
-  final String? time_added;
+  final String? timeAdded;
 
   const Treasure({
-    required this.id,
+    this.id,
     required this.name,
     required this.thumbnail,
     required this.type,
@@ -22,7 +22,7 @@ class Treasure {
     required this.whichmem,
     required this.size,
     // ignore: non_constant_identifier_names
-    this.time_added
+    this.timeAdded
   });
 
   factory Treasure.fromMap(Map<String, dynamic> json) => Treasure(
@@ -35,7 +35,7 @@ class Treasure {
       softpath: json['softpath'],
       whichmem: json['whichmem'],
       size: json['size'],
-      time_added: json['time_added']);
+      timeAdded: json['time_added']);
 
   Map<String, dynamic> toMap() {
     return {
@@ -48,7 +48,7 @@ class Treasure {
       'softpath': softpath,
       'whichmem': whichmem,
       'size': size,
-      'time_added': time_added
+      'time-added': timeAdded
     };
   }
 }

@@ -25,7 +25,7 @@ class DatabaseManager {
         onCreate: (database, version) async {
       return await database.execute('''
           CREATE TABLE treasure(
-           id INTEGER PRIMARY KEY,
+           id INTEGER PRIMARY KEY AUTOINCREMENT,
            name TEXT NOT NULL,
            thumbnail TEXT,
            type varchar(10) NOT NULL,
@@ -34,7 +34,7 @@ class DatabaseManager {
            softpath TEXT NOT NULL,
            whichmem VARCHAR(10) NOT NULL,
            size INTEGER,
-           time_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+           time-added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
            );
         ''');
     });
