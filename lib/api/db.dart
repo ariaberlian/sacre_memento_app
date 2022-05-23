@@ -34,7 +34,7 @@ class DatabaseManager {
            softpath TEXT NOT NULL,
            whichmem VARCHAR(10) NOT NULL,
            size INTEGER,
-           time-added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+           time_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
            );
         ''');
     });

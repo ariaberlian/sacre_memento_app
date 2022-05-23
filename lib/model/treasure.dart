@@ -48,7 +48,7 @@ class Treasure {
       'softpath': softpath,
       'whichmem': whichmem,
       'size': size,
-      'time-added': timeAdded
+      'time_added': timeAdded
     };
   }
 }
