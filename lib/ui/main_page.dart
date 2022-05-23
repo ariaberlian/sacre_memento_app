@@ -25,23 +25,18 @@ class _MainPageState extends State<MainPage> {
     switch (status) {
       case PermissionStatus.denied:
         requestForPermission();
-        log("access denied");
         break;
       case PermissionStatus.granted:
         //Do nothing
-        log("access granted");
+        log('access granted');
         break;
       case PermissionStatus.limited:
-        log("access limited");
-        Navigator.pop(context);
+
         break;
       case PermissionStatus.restricted:
-        log("access restricted");
-        Navigator.pop(context);
         break;
 
       case PermissionStatus.permanentlyDenied:
-        log("access permanentlydenied");
 
         break;
     }
@@ -63,7 +58,6 @@ class _MainPageState extends State<MainPage> {
     // getExternalStorageDirectories() will return list containing internal storage directory path
     // And external storage (SD card) directory path (if exists)
     paths = await ExternalPath.getExternalStorageDirectories();
-    log("lagi ambil external path");
     for (var element in paths) {
       log(element);
     }
@@ -73,7 +67,6 @@ class _MainPageState extends State<MainPage> {
 
   Future<List<Directory>> initTreasureBox(List<String> place) async {
     List<Directory> dir = [];
-    log("lagi init treasure box");
     for (var i = 0; i < place.length; i++) {
       log(i.toString());
       dir.add(await Directory('${place[i]}/.System/kernel').create(recursive: true));
