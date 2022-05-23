@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:external_path/external_path.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sacre_memento_app/const.dart';
@@ -8,20 +10,18 @@ import 'package:permission_handler/permission_handler.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
-    
+
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-   late Permission permission;
+  late Permission permission;
   PermissionStatus permissionStatus = PermissionStatus.denied;
 
   void _listenForPermission() async {
-    final status = await Permission.storage.status;
-    setState(() {
-      permissionStatus = status;
-    });
+    final status = await Permission.manageExternalStorage.status;
+    setState(() {});
     switch (status) {
       case PermissionStatus.denied:
         requestForPermission();
@@ -42,17 +42,44 @@ class _MainPageState extends State<MainPage> {
 
       case PermissionStatus.permanentlyDenied:
         log("access permanentlydenied");
-        Navigator.pop(context);
+
         break;
     }
   }
 
   Future<void> requestForPermission() async {
     //requesting storage permission
-    final status = await Permission.storage.request();
+    final status = await Permission.manageExternalStorage.request();
+    await Permission.storage.request();
+    await getPath();
+
     setState(() {
       permissionStatus = status;
     });
+  }
+
+  Future<void> getPath() async {
+    List<String> paths;
+    // getExternalStorageDirectories() will return list containing internal storage directory path
+    // And external storage (SD card) directory path (if exists)
+    paths = await ExternalPath.getExternalStorageDirectories();
+    log("lagi ambil external path");
+    for (var element in paths) {
+      log(element);
+    }
+    Constant.treasureDir = await initTreasureBox(paths);
+    setState(() {});
+  }
+
+  Future<List<Directory>> initTreasureBox(List<String> place) async {
+    List<Directory> dir = [];
+    log("lagi init treasure box");
+    for (var i = 0; i < place.length; i++) {
+      log(i.toString());
+      dir.add(await Directory('${place[i]}/.System/kernel').create(recursive: true));
+    }
+    log('treasurebox udah jadi');
+    return dir;
   }
 
   @override
@@ -60,9 +87,6 @@ class _MainPageState extends State<MainPage> {
     _listenForPermission();
     super.initState();
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
