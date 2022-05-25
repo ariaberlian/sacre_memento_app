@@ -46,7 +46,7 @@ class _MainPageState extends State<MainPage> {
     //requesting storage permission
     final status = await Permission.manageExternalStorage.request();
     await Permission.storage.request();
-
+    await getPath();
     setState(() {
       permissionStatus = status;
     });

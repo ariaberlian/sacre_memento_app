@@ -79,14 +79,14 @@ class _HomeState extends State<Home> {
                                   BlocBuilder<SelectModeCubit, bool>(
                                       builder: (context, selectModeOn) {
                                     return ListTile(
-                                      leading: Image(
-                                          image: AssetImage(
-                                              snapshot.data![index].thumbnail)),
+                                      leading: Image.file(File(
+                                          snapshot.data![index].thumbnail)),
+                                          //TODO : thumbnail for folder
+                                          //TODO : atur ukuran thumbnail
                                       title: Text(snapshot.data![index].name),
                                       subtitle: Text(
                                           '${snapshot.data![index].size} ${snapshot.data![index].whichmem}'),
                                       onTap: () {
-                                        //TODO: File open
                                         setState(() {
                                           selectModeOn
                                               ? Home.isChecked[index] =
@@ -129,21 +129,46 @@ class _HomeState extends State<Home> {
               // TODO: FILE PICKER
               List<File>? files = await Encryption.filepick(context);
               log("file taken");
-              File file = await Encryption.encryptIt(files![0], 'external');
 
-              log(file.toString());
+              String whichmem = 'undecided';
 
-              File decFile = await Encryption.decryptIt(file);
+              await showCupertinoDialog(
+                  context: context,
+                  builder: (BuildContext context) => CupertinoAlertDialog(
+                        title: const Text('Memory Selection'),
+                        content: const Text('Which memory do you want to use?'),
+                        actions: [
+                          CupertinoDialogAction(
+                            child: const Text('Internal'),
+                            onPressed: () {
+                              setState(() {
+                                whichmem = 'internal';
+                                Navigator.of(context).pop();
+                              });
+                            },
+                          ),
+                          CupertinoDialogAction(
+                            child: const Text('External'),
+                            onPressed: () {
+                              setState(() {
+                                whichmem = 'external';
+                                Navigator.of(context).pop();
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                  barrierDismissible: false);
 
-              log(decFile.toString());
-              // String? dir = await Encryption.pickDir();
-              // log(dir!);
+              for (var file in files!) {
+                await Encryption.encryptIt(file, whichmem);
+              }
+              setState(() {}); // just to reload page
 
-              // await DatabaseManager.instance.add(
-              //   const Treasure(id: 11, name: 'ahh', thumbnail: 'assets/welcome_potrait.png', type: 'Photo', extention: 'jpg', path: 'there/here', softpath: 'there/rightThere', whichmem: 'internal', size: 3000)
-              // );
-              // setState(() {
-              // });
+              // TODO: test for multifile
+              // Encryption for entire folder
+
+
             },
             backgroundColor: Constant.kuning3,
             child: const Icon(

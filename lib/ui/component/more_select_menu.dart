@@ -15,6 +15,7 @@ class MoreSelectMenu extends StatelessWidget {
     return DropdownButton(
       icon: const Icon(Icons.more_vert),
       iconEnabledColor: CupertinoColors.white,
+      autofocus: true,
 
       items: [
         DropdownMenuItem(

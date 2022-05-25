@@ -33,7 +33,7 @@ class DatabaseManager {
            path TEXT NOT NULL,
            softpath TEXT NOT NULL,
            whichmem VARCHAR(10) NOT NULL,
-           size INTEGER,
+           size VARCHAR(20),
            time_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
            );
         ''');

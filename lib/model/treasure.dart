@@ -7,7 +7,7 @@ class Treasure {
   final String path;
   final String softpath;
   final String whichmem;
-  final int size;
+  final String size;
   // ignore: non_constant_identifier_names
   final String? timeAdded;
 
