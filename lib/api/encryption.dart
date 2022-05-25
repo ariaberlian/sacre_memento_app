@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:sacre_memento_app/const.dart';
+import 'package:path/path.dart';
 
 class Encryption {
   static Future<List<File>?> filepick(BuildContext context) async {
@@ -15,14 +18,13 @@ class Encryption {
         'jpeg',
         'mp4',
         'mkv',
-        'ogg',
         'gif',
         'mov',
         'avi',
         'flv',
         'm4p',
         'm4v',
-        ''
+        'txt'
       ],
     );
     List<File> files;
@@ -44,32 +46,54 @@ class Encryption {
 
   // For AES encryption/decryption
   static final key = encrypt.Key.fromLength(32);
-  static final iv = encrypt.IV.fromLength(16);
-  static final encrypter = encrypt.Encrypter(encrypt.AES(key));
-
+  static final iv = encrypt.IV.fromLength(8);
+  // static final encrypter = encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ctr, padding: null));
+  static final encrypter = encrypt.Encrypter(encrypt.Salsa20(key));
   static Future<File> encryptIt(File file, String whichmem) async {
-    //TODO : directory
     Directory dir;
-    if (whichmem == 'internal') {
-      dir = Directory('storage/emulated/0/');
+    if (whichmem == 'external') {
+      dir = Constant.treasureDir[1];
     } else {
-      dir = Directory('storage/emulated/1/');
+      dir = Constant.treasureDir[0];
     }
 
-    String content = file.open().toString();
-    final encrypted = encrypter.encrypt(content, iv: iv);
+    var encrypted;
 
-    log('encrypted bytes  : ${encrypted.bytes.toString()}');
-    log('encrypted base16 : ${encrypted.base16}');
-    log('encrypted base64 : ${encrypted.base64}');
+    await file
+        .readAsBytes()
+        .then((value) => encrypted = encrypter.encryptBytes(value, iv: iv));
 
-    File encryptedFile = await File(dir.path).writeAsBytes(encrypted.bytes);
+    // log('encrypted bytes  : ${encrypted.bytes.toString()}');
+    // log('encrypted base16 : ${encrypted.base16}');
+    // log('encrypted base64 : ${encrypted.base64}');
+
+    log('basename: ${basename(file.path)}');
+    final encryptedfilename = encrypter.encrypt(basename(file.path), iv: iv);
+
+    File encryptedFile = await File('${dir.path}/${encryptedfilename.base64}')
+        .writeAsBytes(encrypted.bytes);
     return encryptedFile;
   }
 
-  static File decryptIt(File file) {
+  static Future<File> decryptIt(File file) async {
     // TODO: implement decrypt
-    throw UnimplementedError();
+
+    var content = encrypt.Encrypted(await file.readAsBytes());
+    var name = encrypt.Encrypted(base64Decode(basename(file.path)));
+
+    var contentName = encrypter.decrypt(name, iv: iv);
+    final decrypted = encrypter.decryptBytes(content, iv: iv);
+    // File decryptedFile = await File('${Constant.treasureDir[1]}/$contentName')
+    //     .writeAsBytes(decrypted);
+
+    log('${Constant.treasureDir[1].path}/$contentName');
+
+    File decryptedFile =
+        await File('${Constant.treasureDir[1].path}/$contentName').create();
+
+    decryptedFile = await decryptedFile.writeAsBytes(decrypted);
+
+    return decryptedFile;
   }
 
   static File readFileFromDir(String dir) {
