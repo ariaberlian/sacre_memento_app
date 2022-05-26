@@ -3,13 +3,13 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build
+name: Build and Release
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    tags:
+      - "v*"
 
 jobs:
   build:
@@ -31,9 +31,6 @@ jobs:
           
       - name: Install Depedencies
         run: flutter pub get
-        
-#       - name: Run test        
-#         run: flutter test
 
       - name: Build app
         run: flutter build apk --release
@@ -53,19 +50,18 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download math result for job 2
+      - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
           name: SacreMemento
+          
       - name: Move apk
         run: |
           mkdir apk
           mv SacreMemento.apk apk/SacreMemento.apk
           
-          
       - name: Sign app APK
         uses: r0adkll/sign-android-release@v1
-        # ID used to access action output
         id: sign_app
         with:
           releaseDirectory: apk
@@ -74,15 +70,25 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
         env:
-          # override default build-tools version (29.0.3) -- optional
           BUILD_TOOLS_VERSION: "30.0.2"
-          
-      - name: Example Release
+      
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/*/}
+        
+      - name: Get App Name
+        id: app_name
+        run: echo ::set-output name=APP_NAME::apk/SacreMemento-${{ steps.get_version.outputs.VERSION }}.apk
+        
+      - name: Rename app
+        run: mv ${{ steps.sign_app.outputs.signedReleaseFile }} ${{ steps.app_name.outputs.APP_NAME }}
+        
+      - name: Upload Release
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: v1.0.${{ github.run_number }}
+          automatic_release_tag: ${{ steps.get_version.outputs.VERSION }}
           prerelease: true
-          title: Release v1.0.${{ github.run_number }}
+          title: Sacre Memento ${{ steps.get_version.outputs.VERSION }}
           files: |
-            ${{steps.sign_app.outputs.signedReleaseFile}}
+            ${{ steps.app_name.outputs.APP_NAME }}
