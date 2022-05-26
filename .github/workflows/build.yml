@@ -1,0 +1,50 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+          
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.0.0'
+          
+      - name: Install Depedencies
+        run: flutter pub get
+        
+#       - name: Run test        
+#         run: flutter test
+
+      - name: Build app
+        run: flutter build apk --release
+        
+      - name: Rename app
+        run: |
+          cd build/app/outputs/flutter-apk
+          mv app-release.apk SacreMemento.apk
+      
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: SacreMemento
+          path: build/app/outputs/flutter-apk/SacreMemento.apk
