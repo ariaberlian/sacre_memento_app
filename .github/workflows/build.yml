@@ -48,3 +48,41 @@ jobs:
         with:
           name: SacreMemento
           path: build/app/outputs/flutter-apk/SacreMemento.apk
+  
+  sign:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download math result for job 2
+        uses: actions/download-artifact@v2
+        with:
+          name: SacreMemento
+      - name: Move apk
+        run: |
+          mkdir apk
+          mv SacreMemento.apk apk/SacreMemento.apk
+          
+          
+      - name: Sign app APK
+        uses: r0adkll/sign-android-release@v1
+        # ID used to access action output
+        id: sign_app
+        with:
+          releaseDirectory: apk
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          # override default build-tools version (29.0.3) -- optional
+          BUILD_TOOLS_VERSION: "30.0.2"
+          
+      - name: Example Release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: v1.0.${{ github.run_number }}
+          prerelease: true
+          title: Release v1.0.${{ github.run_number }}
+          files: |
+            ${{steps.sign_app.outputs.signedReleaseFile}}
