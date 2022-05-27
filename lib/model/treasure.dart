@@ -1,9 +1,9 @@
 class Treasure {
   final int? id;
   final String name;
-  final String thumbnail;
+  final String? thumbnail;
   final String type;
-  final String extention;
+  final String? extention;
   final String path;
   final String softpath;
   final String whichmem;
@@ -14,9 +14,9 @@ class Treasure {
   const Treasure({
     this.id,
     required this.name,
-    required this.thumbnail,
+    this.thumbnail,
     required this.type,
-    required this.extention,
+    this.extention,
     required this.path,
     required this.softpath,
     required this.whichmem,

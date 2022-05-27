@@ -79,10 +79,15 @@ class _HomeState extends State<Home> {
                                   BlocBuilder<SelectModeCubit, bool>(
                                       builder: (context, selectModeOn) {
                                     return ListTile(
-                                      leading: Image.file(File(
-                                          snapshot.data![index].thumbnail)),
-                                          //TODO : thumbnail for folder
-                                          //TODO : atur ukuran thumbnail
+                                      leading:
+                                          snapshot.data![index].type == 'folder'
+                                              ? const Image(
+                                                  image: AssetImage(
+                                                      'assets/folder.png'))
+                                              : Image.file(File(snapshot
+                                                  .data![index].thumbnail!)),
+
+                                      //TODO : atur ukuran thumbnail
                                       title: Text(snapshot.data![index].name),
                                       subtitle: Text(
                                           '${snapshot.data![index].size} ${snapshot.data![index].whichmem}'),
@@ -92,7 +97,7 @@ class _HomeState extends State<Home> {
                                               ? Home.isChecked[index] =
                                                   !Home.isChecked[index]
                                               : log(
-                                                  'File Open'); //TODO file open
+                                                  'File Open'); //TODO file/folder open
                                         });
                                       },
                                       onLongPress: () {
@@ -126,12 +131,50 @@ class _HomeState extends State<Home> {
         ),
         floatingActionButton: FloatingActionButton(
             onPressed: () async {
-              // TODO: FILE PICKER
-              List<File>? files = await Encryption.filepick(context);
-              log("file taken");
-
               String whichmem = 'undecided';
 
+              bool isFolderPick = false;
+
+              await showCupertinoDialog(
+                  context: context,
+                  builder: (BuildContext context) => CupertinoAlertDialog(
+                        title: const Text('Picker'),
+                        content: const Text('What do you want to save?'),
+                        actions: [
+                          CupertinoDialogAction(
+                            child: const Text('Folder'),
+                            onPressed: () {
+                              setState(() {
+                                isFolderPick = true;
+                                Navigator.of(context).pop();
+                              });
+                            },
+                          ),
+                          CupertinoDialogAction(
+                            child: const Text('File'),
+                            onPressed: () {
+                              setState(() {
+                                isFolderPick = false;
+                                Navigator.of(context).pop();
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                  barrierDismissible: false);
+
+              String? dir;
+              List<File>? files;
+              if (isFolderPick) {
+                dir = await Encryption.pickDir();
+                log('folder taken');
+              } else {
+                // ignore: use_build_context_synchronously
+                files = await Encryption.filepick(context);
+                log('file taken');
+              }
+
+              // TODO: Dont ask memory selection if they only have 1 memory
               await showCupertinoDialog(
                   context: context,
                   builder: (BuildContext context) => CupertinoAlertDialog(
@@ -160,15 +203,15 @@ class _HomeState extends State<Home> {
                       ),
                   barrierDismissible: false);
 
-              for (var file in files!) {
-                await Encryption.encryptIt(file, whichmem);
+              if (isFolderPick) {
+                Encryption.encryptEntireFolder(dir!, whichmem);
+                // TODO : reload after encrypt folder
+              } else {
+                for (var file in files!) {
+                  await Encryption.encryptIt(file, whichmem);
+                  setState(() {}); // just to reload page
+                }
               }
-              setState(() {}); // just to reload page
-
-              // TODO: test for multifile
-              // Encryption for entire folder
-
-
             },
             backgroundColor: Constant.kuning3,
             child: const Icon(
